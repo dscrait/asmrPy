@@ -41,10 +41,7 @@ async def on_ready():
     global repo, readmeFile, mdFile, domains
     g = Github(tokens['github_token'])
     repo = g.get_repo("j23saw/asmr-test-lab")
-    domains = []
-    for d in db.resources.find():
-        domains.append(d['domain'])
-    print('We have logged in as {0.user}'.format(bot), domains)
+    print('We have logged in as {0.user}'.format(bot))
 
 @bot.command()
 async def addDomains(ctx, *categories):
