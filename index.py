@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from github import Github
 from pymongo import MongoClient
-import base64
 from mdutils.mdutils import MdUtils
 import json
 
@@ -16,12 +15,6 @@ conn_string = tokens['mongo_connection_string']
 client = MongoClient(conn_string)
 db = client.dscrait
 
-def convertFromB64(encoded):
-    base64_bytes = encoded.encode("utf-8")
-    string_bytes = base64.b64decode(base64_bytes)
-    string = string_bytes.decode("utf-8")
-    return string 
-
 def generateReadme():
     mdFile = MdUtils(file_name = "LOCAL_README.md")
     mdFile.new_header(level=1, title="Compilation Of DSC-RAIT resources")
@@ -29,7 +22,7 @@ def generateReadme():
     for d in db.resources.find():
         mdFile.new_header(level = 2, title = d['domain'])
         for l in d['links']:
-            mdFile.new_paragraph(text=f"{l['info']}: {l['link']}")
+            mdFile.new_paragraph(text= f"{l['info']}: {l['link']}")
     mdFile.create_md_file()
     text = mdFile.read_md_file(file_name = "LOCAL_README.md")
     return text
